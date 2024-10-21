@@ -1,0 +1,32 @@
+services:
+  web:
+    build: .
+    volumes:
+      - .:/app
+    environment:
+      - FLASK_ENV=development
+      - SECRET_KEY=your_secret_key
+      - FLASK_APP=flask_for_startups.py
+      - FLASK_DEBUG=1
+      - FLASK_CONFIG=dev
+      - DEV_DATABASE_URI=postgresql://your_user:your_password@db:5432/flask_for_startups
+      - TEST_DATABASE_URI=postgresql://your_user:your_password@db:5432/test_flask_for_startups
+      - REMEMBER_COOKIE_HTTPONLY=True
+      - SESSION_COOKIE_SAMESITE=Lax
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+
+  db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_DB=flask_for_startups
+      - POSTGRES_USER=your_user
+      - POSTGRES_PASSWORD=your_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+
